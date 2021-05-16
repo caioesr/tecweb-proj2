@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'radiochat.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://localhost/getit?user=getituser&password=getitsenha',
+        default='postgresql://localhost/radiochat?user=admin&password=adminsenha',
         conn_max_age=600,
         ssl_require=not DEBUG
     )
