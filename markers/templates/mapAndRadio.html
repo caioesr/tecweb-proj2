@@ -1,0 +1,118 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Radio Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{% static 'map.css' %}">
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script type="text/javascript" src="https://hosted.muses.org/mrp.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+  <script src="{% static 'geojson.js' %}"></script>
+</head>
+<body>
+
+    <div class="forecast-table" draggable="true">
+        <div class="container">
+            <div class="forecast-container">
+
+                {% for day in today %}
+                    <div class="today forecast">
+                        <div class="forecast-header">
+                            <div class="day">{{ day.today }}</div>
+                            <div class="date">{{day.todayDateDay}} {{day.todayDateMonth}}</div>
+                        </div>
+                        <div class="forecast-content">
+                            <div class="location">{{day.city}}, {{day.country}}</div>
+                            <div class="degree">
+                                <div class="num">{{day.temperature}}<sup>o</sup>C</div>
+                                <div class="forecast-icon">
+                                    <img src="{% static 'icon-1.svg' %}" alt="" width=90>
+                                </div>	
+                            </div>
+                            <span><img src="{% static 'icon-umberella.png' %}" alt="">{{day.rain}}%</span>
+                            <span><img src="{% static 'icon-wind.png' %}" alt="">{{day.wind}}km/h</span>
+                            <span><img src="{% static 'icon-compass.png' %}" alt="">{{day.region}}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                {% for day in days %}
+                    <div class="forecast">
+                        <div class="forecast-header">
+                            <div class="day">{{day.day}}</div>
+                        </div>
+                        <div class="forecast-content">
+                            <div class="forecast-icon">
+                                <img src="{% static 'icon-3.svg' %}" alt="" width=48>
+                            </div>
+                            <div class="degree">{{day.high}}<sup>o</sup>C</div>
+                            <small>{{day.low}}<sup>o</sup></small>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <form id="latlngForm" method="get">{% csrf_token %}</form>
+
+    {% for radio in radios %}
+        <div id="radio" draggable="true">
+            <script type="text/javascript">
+            MRP.insert({
+                'url':'{{ radio.uri }}',
+                'codec':'mp3',
+                'volume':50,
+                'autoplay':false,
+                'forceHTML5':true,
+                'jsevents':true,
+                'buffering':0,
+                'title':'Playing {{ radio.tld }} radio',
+                'wmode':'transparent',
+                'skin':'limed',
+                'width':397,
+                'height':115
+            });
+            </script>
+        </div>
+    {% endfor %}
+
+    <form id="comment-form" method="post">
+        {% csrf_token %}
+        <textarea
+            class="autoresize"
+            name="comment"
+            placeholder="Enter your comment about this country..."
+        ></textarea>
+        <button class="btn" type="submit" name="create-comment">Submit</button>
+    </form>
+
+    <div class="card-container">
+        {% for comment in comments %}
+        <form class="card" method="post">
+            {% csrf_token %}
+            <div class="card-header">
+                <input type="hidden" name="id" id="idInput" value="{{ comment.id }}" />
+                <div class="btns">
+                    <button class="delete-btn" type="submit" name="delete">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-content">
+                <p id="details">{{ comment.comment }}</p>
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+    
+    <script src="{% static 'map.js' %}"></script>
+</body>
+</html>
