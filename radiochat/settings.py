@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '0)^k&4j*+sora^sx3%#6z(=d(bx!i-!d7^-_d5!ci+qwa95d4o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['thawing-fortress-90667.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = []
 
 
 # Application definition
