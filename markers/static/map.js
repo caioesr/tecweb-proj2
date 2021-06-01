@@ -3453,6 +3453,7 @@ function dragElement(elmnt) {
 
 dragElement(document.getElementById("radio"));
 dragElement(document.getElementsByClassName("forecast-table"));
+dragElement(document.getElementById("selo-aprovado"));
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);

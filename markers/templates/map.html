@@ -15,6 +15,9 @@
 <body>
   <div id="map"></div>
   <form id="latlngForm" method="get">{% csrf_token %}</form>
+  {% for selo in selos %}
+    <img id="selo-aprovado" src="{{ selo.src }}">
+  {% endfor %}
   <script src="{% static 'map.js' %}"></script>
 </body>
 </html>

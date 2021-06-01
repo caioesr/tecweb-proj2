@@ -63,6 +63,12 @@
 
     <form id="latlngForm" method="get">{% csrf_token %}</form>
 
+    {% for selo in selos %}
+        <div id="selo-aprovado" draggable="true">
+            <img src="{{ selo.src }}">
+        </div>
+    {% endfor %}
+
     {% for radio in radios %}
         <div id="radio" draggable="true">
             <script type="text/javascript">

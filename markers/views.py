@@ -10,6 +10,26 @@ from .models import Story
 
 def marker(request):
 
+    # pega selo do Toshi :p
+
+    url_selo = "http://54.88.109.168/"
+
+    response = requests.request("GET", f'{url_selo}caioesr/token')
+
+    token = response.json()['token']
+
+    querystring = {
+        "token": token
+    }
+
+    response = requests.post(f'{url_selo}caioesr/image', json=querystring)
+
+    image_uri = response.json()['image_uri']
+
+    selos = {
+        'src': f'{url_selo}{image_uri[1:]}'
+    }
+
     if request.method == 'POST':
 
         code = request.get_full_path().split('&')[-1].split('=')[-1]
@@ -165,6 +185,6 @@ def marker(request):
             'tld': 'fr'
         }
 
-        return render(request, 'mapAndRadio.html', {'comments':Story.objects.all().filter(code=tld),'radios': [radio], 'today':[todayData], 'days':days})
+        return render(request, 'mapAndRadio.html', {'comments':Story.objects.all().filter(code=tld),'radios': [radio], 'today':[todayData], 'days':days, 'selos':[selos]})
 
-    return render(request, 'map.html')
+    return render(request, 'map.html', {'selos':[selos]})
